@@ -1,6 +1,6 @@
 # Emoji Lexicon
 
-* ###Tweets Streaming
+* ### Tweets Streaming
 
 	* First install all required packages
 		```
