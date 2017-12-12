@@ -6,7 +6,6 @@
 		```
 		npm install twit
 		npm install csv-write-stream
-
 		```
 	* run the streaming program
 		```
