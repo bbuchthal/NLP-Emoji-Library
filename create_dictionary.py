@@ -17,7 +17,7 @@ def map_sentiment_word(sentiment):
     return "Masterpiece."
 
 
-def make_dictionary(text):
+def make_dictionary(text, args):
     result = {}
     reader = csv.reader(text)
     positive = 0
@@ -25,21 +25,23 @@ def make_dictionary(text):
     neutual = 0
     for line in reader:
         sentiment = line[2]
-        if sentiment == '1' or sentiment == '0':
-            if negative > 800:
-                continue
-            negative += 1
-            sentiment = -1
-        elif sentiment == '3' or sentiment == '4':
-            if positive > 800:
-                continue
-            positive += 1
-            sentiment = 1
-        else:
-            if neutual > 800:
-                continue
-            neutual += 1
-            sentiment = 0
+        if len(args) > 2:
+            number = args[-1]
+            if sentiment == '1' or sentiment == '0':
+                if negative > number:
+                    continue
+                negative += 1
+                sentiment = -1
+            elif sentiment == '3' or sentiment == '4':
+                if positive > number:
+                    continue
+                positive += 1
+                sentiment = 1
+            else:
+                if neutual > number:
+                    continue
+                neutual += 1
+                sentiment = 0
         emojis = tuple(i[0] for i in re.findall(
             r'([^\w\s’])', line[1]) if i.strip(string.punctuation) != '')
         if emojis == tuple():
@@ -74,8 +76,8 @@ def write_lexicon(output, lexicon):
 
 
 def main(args):
-    with open(args[-1], newline='', encoding='utf-8') as text:
-        result = make_dictionary(text)
+    with open(args[1], newline='', encoding='utf-8') as text:
+        result = make_dictionary(text, args)
         lexicon = make_lexicon(result)
     with open('lexicon.json', 'w', encoding='utf-8') as output:
         write_lexicon(output, lexicon)
